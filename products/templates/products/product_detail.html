@@ -1,0 +1,59 @@
+{% extends 'products/base.html' %}
+{% block content %}
+<div class="card shadow mb-4">
+<div class="card-body">
+<h2>{{ product.name }} {% if avg_rating %}<span class="badge bg-warning text-dark">★ {{ avg_rating|floatformat:1 }}</span>{% endif %}</h2>
+<p>{{ product.brand.name }} - {{ product.model_number }}</p>
+<h3 class="text-success">₹{{ product.current_price }}</h3>
+{% if not in_wishlist %}
+<a href="/wishlist/add/{{ product.id }}/" class="btn btn-sm btn-outline-danger">❤ Add to Wishlist</a>
+{% else %}
+<span class="badge bg-danger">❤ In Wishlist</span>
+{% endif %}
+<a href="/price-alert/{{ product.id }}/" class="btn btn-sm btn-outline-primary">🔔 Price Drop Alert</a>
+
+<table class="table table-bordered mt-3">
+<tr><th>Processor</th><td>{{ product.processor }}</td></tr>
+<tr><th>RAM</th><td>{{ product.ram }}</td></tr>
+<tr><th>Storage</th><td>{{ product.storage }}</td></tr>
+<tr><th>Display</th><td>{{ product.display }}</td></tr>
+<tr><th>Battery</th><td>{{ product.battery }}</td></tr>
+<tr><th>Camera</th><td>{{ product.camera }}</td></tr>
+<tr><th>OS</th><td>{{ product.os }}</td></tr>
+</table>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card"><div class="card-body">
+<h5>📉 Price History - Track price history</h5>
+<table class="table table-sm">
+<tr><th>Date</th><th>Price</th></tr>
+{% for h in price_history %}<tr><td>{{ h.date|date:"d M Y" }}</td><td>₹{{ h.price }}</td></tr>{% empty %}<tr><td colspan="2">No history yet. Add in Admin > Price History</td></tr>{% endfor %}
+</table>
+</div></div>
+</div>
+
+<div class="col-md-6">
+<div class="card"><div class="card-body">
+<h5>⭐ Customer Ratings & Reviews</h5>
+{% for r in reviews %}
+<div class="border-bottom mb-2"><b>{{ r.user.username }} - {{ r.rating }}★</b><p>{{ r.comment }}</p></div>
+{% empty %}<p>No reviews yet</p>{% endfor %}
+
+{% if user.is_authenticated %}
+<form method="post" class="mt-3">
+{% csrf_token %}
+<select name="rating" class="form-select mb-2" required><option value="">Rate</option><option value="5">5 Star</option><option value="4">4 Star</option><option value="3">3 Star</option><option value="2">2 Star</option><option value="1">1 Star</option></select>
+<textarea name="comment" class="form-control mb-2" placeholder="Write review..." required></textarea>
+<button class="btn btn-dark w-100">Submit Review</button>
+</form>
+{% else %}
+<p><a href="/admin/login/">Login</a> to write review</p>
+{% endif %}
+</div></div>
+</div>
+</div>
+<a href="/" class="btn btn-secondary mt-3">Back</a>
+{% endblock %}

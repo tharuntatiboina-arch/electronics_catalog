@@ -1,0 +1,13 @@
+{% extends 'products/base.html' %}
+{% block content %}
+<h3>Compare Products</h3>
+<table class="table table-bordered text-center">
+<tr><th>Product</th>{% for p in products %}<th>{{ p.name }}</th>{% endfor %}</tr>
+<tr><th>Price</th>{% for p in products %}<td>₹{{ p.current_price }}</td>{% endfor %}</tr>
+<tr><th>Processor</th>{% for p in products %}<td>{{ p.processor }}</td>{% endfor %}</tr>
+<tr><th>RAM</th>{% for p in products %}<td>{{ p.ram }}</td>{% endfor %}</tr>
+<tr><th>Storage</th>{% for p in products %}<td>{{ p.storage }}</td>{% endfor %}</tr>
+<tr><th>Display</th>{% for p in products %}<td>{{ p.display }}</td>{% endfor %}</tr>
+</table>
+<a href="/" class="btn btn-dark">Back to List</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'products/base.html' %}{% block content %}
+<div class="card p-4">
+<h4>🔔 Set Price Drop Alert for {{ product.name }}</h4>
+<p>Current: ₹{{ product.current_price }}</p>
+<form method="post">{% csrf_token %}
+<input type="number" name="target_price" placeholder="Enter target price e.g. 50000" class="form-control mb-3" required>
+<button class="btn btn-primary">Set Alert & Send Email</button>
+</form>
+<p class="text-muted mt-2">You will get email when price drops below target!</p>
+</div>
+{% endblock %}
